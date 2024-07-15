@@ -1,0 +1,6 @@
+@PanteonWebAPI_HostAddress = http://localhost:5243
+
+GET {{PanteonWebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
