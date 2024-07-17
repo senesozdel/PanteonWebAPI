@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PanteonWebAPI.Interfaces;
 using PanteonWebAPI.Mappers;
@@ -18,7 +19,7 @@ namespace PanteonWebAPI.Controllers
             _buildingConfiguration = buildingConfiguration;
             _mapper = mapper;
         }
-
+        [Authorize]
         [HttpGet]
         public Task<IEnumerable<BuildingConfiguration>> GetAllBuildingConfigurations()
         {
@@ -44,6 +45,14 @@ namespace PanteonWebAPI.Controllers
         public Task DeleteBuildingConfiguration([FromQuery] int buildingConfigurationId)
         {
             return _buildingConfiguration.DeleteBuildingConfigurationAsync(buildingConfigurationId);
+        }
+
+        [HttpPut("editBuildingConfiguration")]
+
+        public Task<BuildingConfiguration> UpdateBuildingConfiguration([FromBody] BuildingConfigurationDto buildingConfigurationDto)
+        {
+            var buildingConfiguration = _mapper.MapToEntity(buildingConfigurationDto);
+            return _buildingConfiguration.UpdateBuildingConfigurationAsync(buildingConfiguration);
         }
     }
 }

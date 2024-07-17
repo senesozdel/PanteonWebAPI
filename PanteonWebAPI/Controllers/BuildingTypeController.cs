@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PanteonWebAPI.Interfaces;
+using PanteonWebAPI.Models.Dtos;
 using PanteonWebAPI.Models.Entities;
 
 namespace PanteonWebAPI.Controllers
@@ -40,6 +41,14 @@ namespace PanteonWebAPI.Controllers
         public Task DeleteBuildingTypeAsync([FromQuery] int buildingTypeId)
         {
             return _buildingType.DeleteBuildingTypeAsync(buildingTypeId);
+        }
+
+        [HttpPut("editBuildingType")]
+
+        public Task<BuildingType> UpdateBuildingType([FromBody] BuildingType buildingType)
+        {
+            
+            return _buildingType.UpdateBuildingTypeAsync(buildingType);
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using PanteonWebAPI.Models.Entities;
+using PanteonWebAPI.Models.ResponseModels;
 
 namespace PanteonWebAPI.Interfaces
 {
     public interface IUser
     {
-        Task<User> AddUserAsync(User user);
+        Task<AddedUserResponse> AddUserAsync(User user);
         Task<User> UpdateUserAsync(User user);
         Task DeleteUserAsync(int userId);
 

@@ -2,6 +2,7 @@
 using PanteonWebAPI.Interfaces;
 using PanteonWebAPI.Models.Data;
 using PanteonWebAPI.Models.Entities;
+using PanteonWebAPI.Models.ResponseModels;
 
 namespace PanteonWebAPI.Services
 {
@@ -15,20 +16,43 @@ namespace PanteonWebAPI.Services
             _db = db;
         }
 
-        public async Task<User> AddUserAsync(User user)
+        public async Task<AddedUserResponse> AddUserAsync(User user)
         {
             try
             {
-                if (user != null)
-                {
-                    await _db.Users.AddAsync(user);
-                    await _db.SaveChangesAsync();
-                    return user;
-                }
-                else
+                var userResponse = new AddedUserResponse();
+
+                if (user == null)
                 {
                     throw new ArgumentNullException(nameof(user), "User cannot be null");
                 }
+
+               
+                bool isUserNameTaken = await _db.Users.AnyAsync(u => u.UserName == user.UserName);
+                bool isEmailTaken = await _db.Users.AnyAsync(u => u.Email == user.Email);
+
+                if (isEmailTaken)
+                {
+                    userResponse.Message = "Email is already registered. Please use another email.";
+                   
+                    return userResponse;
+                }
+                if (isUserNameTaken)
+                {
+                    userResponse.Message = "Username is already taken. Please choose another username.";
+
+                    return userResponse;
+                }
+
+
+
+                await _db.Users.AddAsync(user);
+                await _db.SaveChangesAsync();
+
+                userResponse.UserEmail = user.Email;
+                userResponse.UserName = user.UserName;
+
+                return userResponse;
             }
             catch (Exception ex)
             {

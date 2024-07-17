@@ -68,6 +68,7 @@ namespace PanteonWebAPI.Services
 
                 var result = from config in _db.BuildingConfigurations
                 join types in _db.BuildingTypes on config.BuildingTypeId equals types.Id
+                where config.IsDeleted == false
                 select new BuildingConfiguration()
                 {
                     Id = config.Id,
@@ -75,7 +76,8 @@ namespace PanteonWebAPI.Services
                     BuildingType = types,
                     BuildingTypeId = types.Id,
                     BuildingCost = config.BuildingCost,
-                    ConstructionTime = config.ConstructionTime
+                    ConstructionTime = config.ConstructionTime,
+                    IsDeleted = config.IsDeleted
                 };
 
                 return await result.ToListAsync();
@@ -119,7 +121,7 @@ namespace PanteonWebAPI.Services
                 {
                     throw new KeyNotFoundException("BuildingConfiguration bulunamadı.");
                 }
-
+                existingBuildingConfiguration.Name = buildingConfiguration.Name;
                 existingBuildingConfiguration.BuildingCost = buildingConfiguration.BuildingCost;
                 existingBuildingConfiguration.BuildingTypeId = buildingConfiguration.BuildingTypeId;
                 existingBuildingConfiguration.ConstructionTime = buildingConfiguration.ConstructionTime;

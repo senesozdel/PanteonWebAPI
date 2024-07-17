@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PanteonWebAPI.Interfaces;
 using PanteonWebAPI.Models.Entities;
+using PanteonWebAPI.Models.ResponseModels;
 
 namespace PanteonWebAPI.Controllers
 {
@@ -30,7 +31,7 @@ namespace PanteonWebAPI.Controllers
 
         [HttpPost("addUser")]
 
-        public Task<User> AddUser([FromBody] User user)
+        public Task<AddedUserResponse> AddUser([FromBody] User user)
         {
             return _user.AddUserAsync(user);
         }
@@ -40,6 +41,14 @@ namespace PanteonWebAPI.Controllers
         public Task DeleteUserAsync([FromQuery] int userId)
         {
             return _user.DeleteUserAsync(userId);
+        }
+
+
+        [HttpPut("editUser")]
+
+        public Task<User> UpdateUser([FromBody] User user)
+        {
+            return _user.UpdateUserAsync(user);
         }
     }
 }
