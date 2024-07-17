@@ -40,7 +40,7 @@ builder.Services.AddSwaggerGen();
 
 
 //builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql("server=localhost;port=3306;database=panteon;", ServerVersion.AutoDetect("server=localhost;port=3306;database=panteon;")));
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer("Data Source=SENES;Integrated Security=True;Initial Catalog=Pentaon;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServer"]));
 
 
 builder.Services.AddScoped<IUser, UserService>();
